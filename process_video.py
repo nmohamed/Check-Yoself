@@ -31,7 +31,15 @@ def show_color():
 
 		#cv2.imshow('frame',frame)
 		#cv2.imshow('mask',mask)
+		imgray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
 		cv2.imshow('res',res)
+		#cv2.imshow('imgray', imgray)
+
+		ret2, thresh = cv2.threshold(imgray, 50, 255, 0)
+		cv2.imshow('thresh', thresh)
+		#print thresh.shape
+		contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+		print contours
 
 		if cv2.waitKey(1) & 0xFF == ord('q'): 
 			break
