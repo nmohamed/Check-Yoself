@@ -31,7 +31,7 @@ class Detect():
 			else:
 				vertical_line = math.sqrt((self.blue[0]-self.red[0])**2 + (self.blue[1]-self.red[1])**2)
 				actual_vertical_line = math.sqrt((self.blue[0]-self.blue[0])**2 + (self.blue[1]-self.red[1])**2)
-				vertical_angle = math.cos(actual_vertical_line/vertical_line)
+				vertical_angle = math.acos(actual_vertical_line/vertical_line)
 				return vertical_angle
 		while(True):
 			# Create frame
@@ -115,8 +115,6 @@ class Detect():
 			
 			if cv2.waitKey(1) & 0xFF == ord('q'): 
 				break
-
-
 
 if __name__ == "__main__":
 	Detect()
