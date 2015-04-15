@@ -6,47 +6,117 @@ exercise.
 
 import cv2
 import numpy as np
+import math
+#import cv2.cv as cv
 
-def compare():
-	pass
+class Detect():
+	def __init__(self):
+		self.cap = cv2.VideoCapture(0)
+		#Initial marker positions
+		self.green = [0,0] #wrist
+		self.blue = [0,0] #shoulder
+		self.red = [0,0] #elbow
 
-def show_color():
-	cap = cv2.VideoCapture(0)
-	while(True):
-		# Create frame
-		ret, frame = cap.read()
+		self.run_video()
 
-		# Convert BGR to HSV
-		hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+		# Release the capture
+		self.cap.release()
+		cv2.destroyAllWindows()
 
-		# define range of blue color in HSV
-		lower_blue = np.array([100,200,50])
-		upper_blue = np.array([190,255,255])
 
-		# Threshold the HSV image to get only blue colors
-		mask = cv2.inRange(hsv, lower_blue, upper_blue)
+	def run_video(self):
+		def bicep_angle():
+			if self.blue == [0,0] or self.red == [0,0]:
+				return 0
+			else:
+				vertical_line = math.sqrt((self.blue[0]-self.red[0])**2 + (self.blue[1]-self.red[1])**2)
+				actual_vertical_line = math.sqrt((self.blue[0]-self.blue[0])**2 + (self.blue[1]-self.red[1])**2)
+				vertical_angle = math.cos(actual_vertical_line/vertical_line)
+				return vertical_angle
+		while(True):
+			# Create frame
+			ret, frame = self.cap.read()
+			# Convert BGR to HSV
+			hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-		# Bitwise-AND mask and original image
-		res = cv2.bitwise_and(frame,frame, mask= mask)
+			# define range of color in HSV
+			lower_blue = np.array([70,50,0])
+			upper_blue = np.array([150,255,255])
 
-		#cv2.imshow('frame',frame)
-		#cv2.imshow('mask',mask)
-		imgray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
-		cv2.imshow('res',res)
-		#cv2.imshow('imgray', imgray)
+			lower_red = np.array([150, 50, 0])
+			upper_red = np.array([360, 255, 255])
 
-		ret2, thresh = cv2.threshold(imgray, 50, 255, 0)
-		cv2.imshow('thresh', thresh)
-		#print thresh.shape
-		contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-		print contours
+			lower_green = np.array([30, 60, 100])
+			upper_green = np.array([70, 255, 255])
 
-		if cv2.waitKey(1) & 0xFF == ord('q'): 
-			break
+			# Threshold the HSV image to get only blue colors
+			mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
+			mask_red = cv2.inRange(hsv, lower_red, upper_red)
+			mask_green = cv2.inRange(hsv, lower_green, upper_green)
 
-	# Release the capture
-	cap.release()
-	cv2.destroyAllWindows()
+			# Bitwise-AND mask and original image
+			res_blue = cv2.bitwise_and(frame,frame, mask = mask_blue) #original in HSV
+			color_blur_blue = cv2.medianBlur(res_blue, 5) #blurred color image
+			imgray_blue = cv2.cvtColor(color_blur_blue,cv2.COLOR_BGR2GRAY) #blurred b&w
+
+			res_red = cv2.bitwise_and(frame,frame, mask = mask_red) #original in HSV
+			color_blur_red = cv2.medianBlur(res_red, 5) #blurred color image
+			imgray_red = cv2.cvtColor(color_blur_red,cv2.COLOR_BGR2GRAY) #blurred b&w
+
+			res_green = cv2.bitwise_and(frame,frame, mask = mask_green) #original in HSV
+			color_blur_green = cv2.medianBlur(res_green, 5) #blurred color image
+			imgray_green = cv2.cvtColor(color_blur_green,cv2.COLOR_BGR2GRAY) #blurred b&w
+
+			
+			#Do circles
+			circles_b = []
+			circles_b = cv2.HoughCircles(imgray_blue, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
+										param2=25, minRadius=0, maxRadius=0)
+
+			if circles_b is not None:
+				for i in circles_b[0,:]:
+					self.blue[0] = i[0]
+					self.blue[1] = i[1]
+					# draw the center of the circle
+					cv2.circle(frame, (i[0],i[1]), 2,(255,0,0),3)
+
+			circles_r = []
+			circles_r = cv2.HoughCircles(imgray_red, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
+										param2=25, minRadius=0, maxRadius=0)
+
+			if circles_r is not None:
+				for i in circles_r[0,:]:
+					self.red[0] = i[0]
+					self.red[1] = i[1]
+					# draw the center of the circle
+					cv2.circle(frame, (i[0],i[1]),2,(0,0,255),3)
+
+			circles_g = []
+			circles_g = cv2.HoughCircles(imgray_green, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
+										param2=25, minRadius=0, maxRadius=0)
+
+			if circles_g is not None:
+				for i in circles_g[0,:]:
+					self.green[0] = i[0]
+					self.green[1] = i[1]
+					# draw the center of the circle
+					cv2.circle(frame, (i[0],i[1]),2,(0,255,0),3)
+			
+			cv2.line(frame, (self.blue[0], self.blue[1]), (self.red[0], self.red[1]), (0,0,255)) #red to blue line
+			cv2.line(frame, (self.green[0], self.green[1]), (self.red[0], self.red[1]), (0,255,0)) #red to green line
+
+			a = bicep_angle()*57.29
+			print a
+			if a > 15:
+				cv2.line(frame, (100,100), (400,400), (0,255,255))
+			#if blue is shoulder, red is elbow, green is hand:
+			cv2.imshow('frame', frame)
+
+			
+			if cv2.waitKey(1) & 0xFF == ord('q'): 
+				break
+
+
 
 if __name__ == "__main__":
-	show_color()
+	Detect()
