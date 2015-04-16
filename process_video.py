@@ -7,7 +7,6 @@ exercise.
 import cv2
 import numpy as np
 import math
-#import cv2.cv as cv
 
 class Detect():
 	def __init__(self):
@@ -39,14 +38,14 @@ class Detect():
 			# Convert BGR to HSV
 			hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-			# define range of color in HSV
-			lower_blue = np.array([70,50,0])
+			# define orange of color in HSV
+			lower_blue = np.array([70,50,150])
 			upper_blue = np.array([150,255,255])
 
-			lower_red = np.array([150, 50, 0])
+			lower_red = np.array([150, 50, 150])
 			upper_red = np.array([360, 255, 255])
 
-			lower_green = np.array([30, 60, 100])
+			lower_green = np.array([30, 150, 100])
 			upper_green = np.array([70, 255, 255])
 
 			# Threshold the HSV image to get only blue colors
@@ -105,10 +104,16 @@ class Detect():
 			cv2.line(frame, (self.blue[0], self.blue[1]), (self.red[0], self.red[1]), (0,0,255)) #red to blue line
 			cv2.line(frame, (self.green[0], self.green[1]), (self.red[0], self.red[1]), (0,255,0)) #red to green line
 
+			#angle detection
 			a = bicep_angle()*57.29
 			print a
-			if a > 15:
-				cv2.line(frame, (100,100), (400,400), (0,255,255))
+			if a > 10:
+				overlay = frame.copy()
+				cv2.rectangle(overlay, (0,0), (640,500), (0,0,255), thickness = -1)
+				opacity = .4
+				cv2.addWeighted(overlay, opacity, frame, 1-opacity, 0, frame)
+				#cv2.line(frame, (100,100), (400,400), (0,255,255))
+			
 			#if blue is shoulder, red is elbow, green is hand:
 			cv2.imshow('frame', frame)
 
