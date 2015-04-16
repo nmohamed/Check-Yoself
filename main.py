@@ -5,6 +5,7 @@ Software Design 2015
 import cv2
 import numpy as np
 from Tkinter import *
+from process_video import *
 
 class MakeWindow(Frame):
 	def __init__(self, master):
@@ -16,8 +17,6 @@ class MakeWindow(Frame):
 		self.add_button()
 
 	def add_button(self):
-		# Quit Button
-		Button(self.button_frame, text = 'Quit', command = quit).pack(fill = X)
 		#Button(self.button_frame, text = 'Tutorial').pack(fill = X)
 		#Button(self.button_frame, text = 'Check Yourself').pack(fill = X)
 		# Pushup Botton
@@ -25,20 +24,11 @@ class MakeWindow(Frame):
 		Button(self.button_frame, text = 'Pushup').pack(fill = X)
 		Button(self.button_frame, text = 'Deadlift').pack(fill = X)
 		Button(self.button_frame, text = 'Lunge').pack(fill = X)
+		Button(self.button_frame, text = 'Quit', command = quit).pack(fill = X)
+
 
 	def do_video(self):
-		cap = cv2.VideoCapture(0)
-		while(True):
-			# Create frame
-			ret, frame = cap.read()
-
-			# Display the resulting frame
-			cv2.imshow('frame',frame)
-			if cv2.waitKey(1) & 0xFF == ord('q'): #currently, press 'q' stops it but doesnt delete the video window
-				break
-		# Release the capture
-		cap.release()
-		cv2.destroyAllWindows()
+		Detect()
 
 
 if __name__ == "__main__":

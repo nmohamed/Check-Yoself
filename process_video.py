@@ -122,4 +122,4 @@ class Detect():
 				break
 
 if __name__ == "__main__":
-	Detect()
+	pass
