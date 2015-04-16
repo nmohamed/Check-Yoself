@@ -1,34 +1,25 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Check Yo-Self by nmohamed</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Check Yo-Self</h1>
-        <p>A python program that helps you check your form when weight lifting.</p>
+    <section class="page-header">
+      <h1 class="project-name">Check Yo-Self</h1>
+      <h2 class="project-tagline">A python program that helps you check your form when weight lifting.</h2>
+      <a href="https://github.com/nmohamed/Check_Yo-self" class="btn">View on GitHub</a>
+      <a href="https://github.com/nmohamed/Check_Yo-self/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/nmohamed/Check_Yo-self/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <p class="view"><a href="https://github.com/nmohamed/Check_Yo-self">View the Project on GitHub <small>nmohamed/Check_Yo-self</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/nmohamed/Check_Yo-self/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nmohamed/Check_Yo-self/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nmohamed/Check_Yo-self">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="check-yourself" class="anchor" href="#check-yourself" aria-hidden="true"><span class="octicon octicon-link"></span></a>Check Yourself</h1>
 
 <h2>
@@ -37,7 +28,23 @@
 <p>By Nora Mohamed (<a href="https://github.com/nmohamed" class="user-mention">@nmohamed</a>), Cindy Sun (<a href="https://github.com/xmsun" class="user-mention">@xmsun</a>), Jason Lan (<a href="https://github.com/Ziyilan" class="user-mention">@Ziyilan</a>), and Zarin Bhuiyan (<a href="https://github.com/zbhuiyan" class="user-mention">@zbhuiyan</a>).</p>
 
 <h3>
-<a id="reflection-and-synthesis" class="anchor" href="#reflection-and-synthesis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reflection and Synthesis</h3>
+<a id="preparation--framing-documents-for-code-review" class="anchor" href="#preparation--framing-documents-for-code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation &amp; Framing Documents for Code Review</h3>
+
+<p>Prep &amp; Framing Document for Code Review
+Background and context</p>
+
+<p>We are currently able to detect colored markers and recognize the angle between each marker. However, we have found that the color detection depends heavily on the lighting of the room and the given conditions of the environment. Therefore, we plan to replace these color markers with fiducials in order to increase the accuracy of marker detection and recognition. We have currently had a bit of difficulty with installing ArUco, the library we will use for fiducials, and calibrating the camera. Now that we are able to detect markers and angles, we are also looking to integrate this into the GUI so that the user can view a tutorial video and follow along. After the feedback from the last design review, we are also keeping in mind audio feedback. We have determined that our code architecture will be organized by functions (such as determining a straight line) and implemented for each exercise, rather than organized by exercises.</p>
+
+<p>Key questions</p>
+
+<p>Our main objective for this code review is to get constructive feedback on our current prototype of marker detection, especially on the ease of use. We would also like some feedback on ways to organize our code more efficiently, particularly whether we should group our code by specific functions or exercise classes. Additionally, our questions revolve around allowing the application to adjust to the background automatically, especially when using color markers. Lastly, we are open to any advice regarding fiducials; for example, we are still looking for a more convenient library to use.</p>
+
+<p>Agenda for technical review session</p>
+
+<p>We will first give an overview of our current progress through the presentation and our code, which will be a little less than 10 minutes if we open up the room to questions and feedback. We will also interrupt our presentation at the end to demonstrate to the audience how our application works. The audience will have the opportunity to try out and give verbal feedback for the prototype, which will take around 5 minutes.</p>
+
+<h3>
+<a id="reflection-and-synthesis-for-design-review" class="anchor" href="#reflection-and-synthesis-for-design-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reflection and Synthesis for Design Review</h3>
 
 <p><strong>Feedback and decisions</strong>:</p>
 
@@ -56,7 +63,7 @@
 <p>Most of the part of our design review went well as expected. We got various answers to our main questions and had some valuable discussion with the audiences. From the discussion, we got to look at our project from some aspects we’ve never thought of before, for instance: making some of the design decisions not only from the technical perspective, but from the customer need as well. We provided enough context for the audience to understand what we are doing and how our program would work, since there weren’t many questions on clarifying what we were doing. Our group followed our agenda fairly well and presented as planned, although we didn’t utilize all of our time and had several minutes leftover in our design review. This is mostly because we wanted to keep our presentation short, so we would have more time for questions and feedback. Next time we’ll try to strike a better balance between our presentation time and time sought for feedback.</p>
 
 <h3>
-<a id="preparation-and-framing" class="anchor" href="#preparation-and-framing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation and Framing</h3>
+<a id="preparation-and-framing-for-design-review" class="anchor" href="#preparation-and-framing-for-design-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation and Framing for Design Review</h3>
 
 <p><strong>Background and context</strong>
 The goal of our project is to create a program that will teach and correct users’ postures when exercising. It utilizes OpenCV to track the movement of the user. Depending on the method of tracking you use and the way to check if you’re maintaining proper posture, this could be difficult (due to lack of accuracy). People have different shapes and sizes, so comparing to a standard body wouldn't be very accurate. There are also some things that are hard to track with a lot of accuracy, like the straightness of a back. Tkinter is the GUI
@@ -126,13 +133,16 @@ Deliverable: TBD*</p>
 <p><strong>Risks</strong>: Hurting ourselves when trying to test the program, not getting OpenCV to work the way we will need it to, not knowing how to code what we want to code and general library/python problems. Efficiently sharing our code on GitHub might also be difficult. We will also need to make sure we have a schedule with which we can implement and combine everything with timeliness.</p>
 
 <p><strong>Additional Course Content</strong>: More details on OpenCV (motion tracking, image comparison) would be useful to do in class.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/nmohamed">nmohamed</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/nmohamed/Check_Yo-self">Check Yo-Self</a> is maintained by <a href="https://github.com/nmohamed">nmohamed</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+    </section>
+
+  
   </body>
 </html>
+
