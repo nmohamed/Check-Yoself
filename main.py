@@ -2,10 +2,11 @@
 Check your posture when lifting.
 Software Design 2015
 """
+
 import cv2
 import numpy as np
 from Tkinter import *
-import argparseq
+
 
 class MakeWindow(Frame):
 	def __init__(self, master):
