@@ -28,18 +28,28 @@
 <p>By Nora Mohamed (<a href="https://github.com/nmohamed" class="user-mention">@nmohamed</a>), Cindy Sun (<a href="https://github.com/xmsun" class="user-mention">@xmsun</a>), Jason Lan (<a href="https://github.com/Ziyilan" class="user-mention">@Ziyilan</a>), and Zarin Bhuiyan (<a href="https://github.com/zbhuiyan" class="user-mention">@zbhuiyan</a>).</p>
 
 <h3>
-<a id="preparation--framing-documents-for-code-review" class="anchor" href="#preparation--framing-documents-for-code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation &amp; Framing Documents for Code Review</h3>
+<a id="reflection--synthesis-document-for-code-review" class="anchor" href="#reflection--synthesis-document-for-code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reflection &amp; Synthesis Document for Code Review</h3>
 
-<p>Prep &amp; Framing Document for Code Review
-Background and context</p>
+<p><strong>Feedback and decisions</strong>
+We plan to use the model view controller UML format and look into using LEDs or light as markers so that our program is less dependant on surroundings and possibly using QR codes instead of fiducials. On the code structure side, we decided to incorporate a larger superclass from which we would inherit general functions for specific exercises. This would work by passing angles to the constructor. The general functions we have in mind would include “is straight” or “is 90 degrees” to make our code more concise and efficient.</p>
+
+<p><strong>Review process reflection</strong>
+The design review went as we had expected. We got some valuable feedbacks to answer our main questions. The context we provided to the audiences was sufficient enough to let them engage in the discussion while not too much to occupy the majority of the time. One thing we think helpful is that we provided audiences the chance to try our prototype themselves so that they can give us more useful feedbacks.  </p>
+
+<p>We stayed close to our planned agenda and followed it. We planned on demonstrating our program to the audience, and we stuck with the questions we had. Something we could do next time to have an even more effective code review is to give the audience more context to what we’re doing. This applied to the other groups as well, but it was difficult to give advice to the other groups/get advice because our projects aren’t very similar to each other, so we don’t know a lot of things that could be helpful to the other teams/vice versa. We also could’ve had more code to review, because that might mean we have more issues with our code and thus more questions.</p>
+
+<h3>
+<a id="preparation--framing-document-for-code-review" class="anchor" href="#preparation--framing-document-for-code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation &amp; Framing Document for Code Review</h3>
+
+<p><strong>Background and context</strong></p>
 
 <p>We are currently able to detect colored markers and recognize the angle between each marker. However, we have found that the color detection depends heavily on the lighting of the room and the given conditions of the environment. Therefore, we plan to replace these color markers with fiducials in order to increase the accuracy of marker detection and recognition. We have currently had a bit of difficulty with installing ArUco, the library we will use for fiducials, and calibrating the camera. Now that we are able to detect markers and angles, we are also looking to integrate this into the GUI so that the user can view a tutorial video and follow along. After the feedback from the last design review, we are also keeping in mind audio feedback. We have determined that our code architecture will be organized by functions (such as determining a straight line) and implemented for each exercise, rather than organized by exercises.</p>
 
-<p>Key questions</p>
+<p><strong>Key questions</strong></p>
 
 <p>Our main objective for this code review is to get constructive feedback on our current prototype of marker detection, especially on the ease of use. We would also like some feedback on ways to organize our code more efficiently, particularly whether we should group our code by specific functions or exercise classes. Additionally, our questions revolve around allowing the application to adjust to the background automatically, especially when using color markers. Lastly, we are open to any advice regarding fiducials; for example, we are still looking for a more convenient library to use.</p>
 
-<p>Agenda for technical review session</p>
+<p><strong>Agenda for technical review session</strong></p>
 
 <p>We will first give an overview of our current progress through the presentation and our code, which will be a little less than 10 minutes if we open up the room to questions and feedback. We will also interrupt our presentation at the end to demonstrate to the audience how our application works. The audience will have the opportunity to try out and give verbal feedback for the prototype, which will take around 5 minutes.</p>
 
