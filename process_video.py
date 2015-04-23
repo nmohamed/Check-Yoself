@@ -10,6 +10,7 @@ import math
 
 class Detect():
 	def __init__(self):
+		cv2.namedWindow('cam', 1)
 		self.cap = cv2.VideoCapture(0)
 		#Initial marker positions
 		self.green = [0,0] #wrist
@@ -118,7 +119,8 @@ class Detect():
 			cv2.imshow('frame', frame)
 
 			
-			if cv2.waitKey(1) & 0xFF == ord('q'): 
+			if cv2.waitKey(1) & 0xFF == ord('q'):
+				cv2.destroyWindow('cam')
 				break
 
 if __name__ == "__main__":
