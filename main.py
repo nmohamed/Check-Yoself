@@ -9,7 +9,6 @@ import Tkinter as tk
 import analyze_func as af
 
 # The view
-
 class BaseFrame(tk.Frame):
     """An abstract base class for the frames that sit inside PythonGUI.
 
@@ -33,7 +32,6 @@ class BaseFrame(tk.Frame):
         raise NotImplementedError
 
 
-
 class HomeFrame(BaseFrame):
     """The application home page.
 
@@ -50,6 +48,7 @@ class HomeFrame(BaseFrame):
         self.tutorial.grid(padx=5, pady=5, sticky=tk.W+tk.E)
         self.checkyourself.grid(padx=5, pady=5, sticky=tk.W+tk.E)
         self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
 
 class TutorialFrame(BaseFrame):
     """The application home page.
@@ -100,9 +99,6 @@ class ExerciseFrame(BaseFrame):
         self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
         self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
-    def process(self):
-        Detect()
-
 
 class PythonGUI(tk.Tk):
     """The main window of the GUI.
@@ -141,27 +137,6 @@ class PythonGUI(tk.Tk):
 
         """
         self.frames[cls].tkraise()
-
-
-"""
-class MakeWindow(Frame):
-	def __init__(self, master):
-		# Initialize GUI & frame
-		self.master = master
-		self.button_frame = Frame(self.master, width = 400, height = 400, colormap = 'new')
-		self.button_frame.pack(fill = X)
-		self.add_button()
-
-	def add_button(self):
-		#Button(self.button_frame, text = 'Tutorial').pack(fill = X)
-		#Button(self.button_frame, text = 'Check Yourself').pack(fill = X)
-		# Pushup Botton
-		Button(self.button_frame, text = 'Bicep Curls', command = lambda:Camera('Bicep Curl')).pack(fill=X)
-		Button(self.button_frame, text = 'Pushup').pack(fill = X)
-		Button(self.button_frame, text = 'Deadlift').pack(fill = X)
-		Button(self.button_frame, text = 'Lunge').pack(fill = X)
-		Button(self.button_frame, text = 'Quit', command = quit).pack(fill = X)
-"""
 
 # The second view
 class Camera():
