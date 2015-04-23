@@ -5,12 +5,146 @@ Software Design 2015
 import cv2
 import numpy as np
 import math
-from Tkinter import *
+import Tkinter as tk
 import analyze_func as af
 
 # The view
+
+class BaseFrame(tk.Frame):
+    """An abstract base class for the frames that sit inside PythonGUI.
+
+    Args:
+      master (tk.Frame): The parent widget.
+      controller (PythonGUI): The controlling Tk object.
+
+    Attributes:
+      controller (PythonGUI): The controlling Tk object.
+
+    """
+
+    def __init__(self, master, controller):
+        tk.Frame.__init__(self, master)
+        self.controller = controller
+        self.grid()
+        self.create_widgets()
+
+    def create_widgets(self):
+        """Create the widgets for the frame."""
+        raise NotImplementedError
+
+
+
+class HomeFrame(BaseFrame):
+    """The application home page.
+
+    Attributes:
+      new_button (tk.Button): The button to switch to ExecuteFrame.
+
+    """
+
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
+        self.tutorial = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(TutorialFrame),padx=5,pady=5,text="Tutorial")
+        self.checkyourself = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(ExerciseFrame),padx=5,pady=5,text="Check Yourself")
+        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+        self.tutorial.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.checkyourself.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
+class TutorialFrame(BaseFrame):
+    """The application home page.
+
+    Attributes:
+      new_button (tk.Button): The button to switch to HomeFrame.
+
+    """
+
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
+        self.BicepCurls = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Bicep Curls")
+        self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
+        self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+        self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
+        self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+
+        self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
+
+class ExerciseFrame(BaseFrame):
+    """The application home page.
+
+    Attributes:
+      new_button (tk.Button): The button to switch to HomeFrame.
+
+    """
+
+    def create_widgets(self):
+        """Create the base widgets for the frame."""
+        self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: Camera('Bicep Curl'),padx=5,pady=5,text="Bicep Curls")
+        self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
+        self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+        self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
+        self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+
+        self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
+    def process(self):
+        Detect()
+
+
+class PythonGUI(tk.Tk):
+    """The main window of the GUI.
+
+    Attributes:
+      container (tk.Frame): The frame container for the sub-frames.
+      frames (dict of tk.Frame): The available sub-frames.
+
+    """
+
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self.title("Python GUI")
+        self.create_widgets()
+        self.resizable(0, 0)
+
+    def create_widgets(self):
+        """Create the widgets for the frame."""             
+        #   Frame Container
+        self.container = tk.Frame(self)
+        self.container.grid(row=0, column=0, sticky=tk.W+tk.E)
+
+        #   Frames
+        self.frames = {}
+        for f in (HomeFrame, TutorialFrame, ExerciseFrame): # defined subclasses of BaseFrame
+            frame = f(self.container, self)
+            frame.grid(row=2, column=2, sticky=tk.NW+tk.SE)
+            self.frames[f] = frame
+        self.show_frame(HomeFrame)
+
+    def show_frame(self, cls):
+        """Show the specified frame.
+
+        Args:
+          cls (tk.Frame): The class of the frame to show. 
+
+        """
+        self.frames[cls].tkraise()
+
+
+"""
 class MakeWindow(Frame):
-	""" Does ugly GUI stuff"""
 	def __init__(self, master):
 		# Initialize GUI & frame
 		self.master = master
@@ -27,6 +161,7 @@ class MakeWindow(Frame):
 		Button(self.button_frame, text = 'Deadlift').pack(fill = X)
 		Button(self.button_frame, text = 'Lunge').pack(fill = X)
 		Button(self.button_frame, text = 'Quit', command = quit).pack(fill = X)
+"""
 
 # The second view
 class Camera():
@@ -133,6 +268,6 @@ class Detect():
 		self.marker_pos = circles
 
 if __name__ == "__main__":
-	root = Tk()
-	ex = MakeWindow(root)
-	root.mainloop() 
+    app = PythonGUI()
+    app.mainloop()
+    exit()
