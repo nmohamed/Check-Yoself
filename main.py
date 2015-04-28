@@ -27,6 +27,7 @@ class BaseFrame(tk.Frame):
         self.grid()
         self.create_widgets()
 
+
     def create_widgets(self):
         """Create the widgets for the frame."""
         raise NotImplementedError
@@ -238,7 +239,7 @@ class Detect():
 		# Find color cricles
 		circles = []
 		circles = cv2.HoughCircles(imgray, cv2.cv.CV_HOUGH_GRADIENT,1,
-		 				20, param1=10, param2=25, minRadius=0, maxRadius=0)
+		 				20, param1=20, param2=25, minRadius=0, maxRadius=0)
 		
 		self.marker_pos = circles
 
