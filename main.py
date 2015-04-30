@@ -3,10 +3,12 @@ Check your posture when lifting.
 Software Design 2015
 """
 import cv2
+import cv
 import numpy as np
 import math
 import Tkinter as tk
 import analyze_func as af
+
 
 # The view
 class BaseFrame(tk.Frame):
@@ -61,7 +63,7 @@ class TutorialFrame(BaseFrame):
 
     def create_widgets(self):
         """Create the base widgets for the frame."""
-        self.BicepCurls = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Bicep Curls")
+        self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
         self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
         self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
         self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
@@ -74,6 +76,36 @@ class TutorialFrame(BaseFrame):
         self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
         self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
         self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
+    def biceptutorial(self):
+
+        vidFile = cv.CaptureFromFile( 'biceps.mp4' )
+        # cv2.namedWindow("bicepvid", 1)
+
+        nFrames = int(  cv.GetCaptureProperty( vidFile, cv.CV_CAP_PROP_FRAME_COUNT ) )
+        fps = cv.GetCaptureProperty( vidFile, cv.CV_CAP_PROP_FPS )
+        waitPerFrameInMillisec = int( 1/fps * 1000/1 )
+
+        print 'Num. Frames = ', nFrames
+        print 'Frame Rate = ', fps, ' frames per sec'
+
+        for f in xrange(nFrames):
+          frameImg = cv.QueryFrame(vidFile)
+          cv.ShowImage( "bicepvid",  frameImg )
+          cv.WaitKey(waitPerFrameInMillisec)
+          cv2.destroyWindow(bicepvid)
+          
+
+        # When playing is done, delete the window
+        #  NOTE: this step is not strictly necessary, 
+        #         when the script terminates it will close all windows it owns anyways
+        # c = cv.WaitKey(27)
+        # if c == 27:
+        #     cv.DestroyAllWindows("Test")
+        # #     # break
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     cv2.destroyWindow(nFrames)
+
 
 
 class ExerciseFrame(BaseFrame):
