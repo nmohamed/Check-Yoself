@@ -7,26 +7,23 @@ import numpy as np
 import math
 import Tkinter as tk
 import analyze_func as af
+import pygame
+import time
 
 # The view
 class BaseFrame(tk.Frame):
-    """An abstract base class for the frames that sit inside PythonGUI.
-
-    Args:
-      master (tk.Frame): The parent widget.
-      controller (PythonGUI): The controlling Tk object.
-
-    Attributes:
-      controller (PythonGUI): The controlling Tk object.
-
-    """
+    """ An abstract base class for the frames that sit inside PythonGUI.
+        Args:
+            master (tk.Frame): The parent widget.
+            controller (PythonGUI): The controlling Tk object.
+        Attributes:
+            controller (PythonGUI): The controlling Tk object."""
 
     def __init__(self, master, controller):
         tk.Frame.__init__(self, master)
         self.controller = controller
         self.grid()
         self.create_widgets()
-
 
     def create_widgets(self):
         """Create the widgets for the frame."""
@@ -35,11 +32,8 @@ class BaseFrame(tk.Frame):
 
 class HomeFrame(BaseFrame):
     """The application home page.
-
-    Attributes:
-      new_button (tk.Button): The button to switch to ExecuteFrame.
-
-    """
+        Attributes:
+            new_button (tk.Button): The button to switch to ExecuteFrame."""
 
     def create_widgets(self):
         """Create the base widgets for the frame."""
@@ -144,16 +138,22 @@ class Camera():
 	""" OpenCV stuff"""
 	def __init__(self, exercise):
 		self.cap = cv2.VideoCapture(0)
+		self.timer = 0
+		self.blue_values = ([70, 150, 200], [150, 255, 255])
+		self.red_values = ([150, 150, 150] , [360, 255, 255])
+		self.draw_blue = [0,0]
+		self.draw_red = [0,0]
+		self.do_exercise(exercise)
+
+	def do_exercise(self, exercise):
 		if exercise == 'Bicep Curl':
-			blue = Detect([70,50,150], [150,255,255])
-			blue.marker_pos = [0, 0]
-			red = Detect([150, 50, 150] , [360, 255, 255])
-			red.marker_pos = [0,0]
-			self.draw_blue = [0,0]
-			self.draw_red = [0,0]
+			blue = Detect(self.blue_values[0], self.blue_values[1])
+			red = Detect(self.red_values[0], self.red_values[1])
+
 		#green = Detect([30, 150, 100,  70, 255, 255])
 
 		while(True):
+			print 'yup'
 			# Create frame
 			self.ret, self.frame = self.cap.read()
 			# Convert BGR to HSV
@@ -166,9 +166,7 @@ class Camera():
 				red.get_marker(self.hsv, self.frame)
 
 				#based on marker position, analyse
-				self.draw_bicep(blue.marker_pos, red.marker_pos) #input exercise
-				print self.draw_blue
-			
+				self.draw_bicep(red.marker_pos, blue.marker_pos) #input exercise			
 			# Show frame
 			cv2.imshow('frame', self.frame)
 
@@ -180,12 +178,13 @@ class Camera():
 		self.cap.release()
 		cv2.destroyAllWindows()
 
-	def draw_bicep(self, blue, red):
+	def draw_bicep(self, red_pos, blue_pos):
 		""" blue: marker position of blue marker, same with red
 			draw_blue/draw_red = last seen position of markers for drawing persistent line"""
 		#draw circles
-		self.draw_blue = self.draw_circles(blue, (255,0,0), self.draw_blue)
-		self.draw_red = self.draw_circles(red, (0,0,255), self.draw_red)
+		print self.draw_red
+		self.draw_blue = self.draw_circles(blue_pos, (255,0,0), self.draw_blue)
+		self.draw_red = self.draw_circles(red_pos, (0,0,255), self.draw_red)
 
 		#draw limbs
 		cv2.line(self.frame, (self.draw_blue[0], self.draw_blue[1]), (self.draw_red[0], self.draw_red[1]), (0,0,255)) #red to blue line
@@ -199,14 +198,21 @@ class Camera():
 		if a > 10:
 			self.show_error()
 
-	def draw_circles(self, circles, color, last_found):
+	def draw_circles(self, circles, color, last_seen):
 		""" Draws a circle where the marker is detected and also returns the position of the first marker"""
 		if circles is not None:
+			average = [0, 0]
+			count = 0;
 			for i in circles[0,:]:
-				last_found[0] = i[0]
-				last_found[1] = i[1]
 				cv2.circle(self.frame, (i[0],i[1]), 2, color,3)
-		return last_found
+				average[0] += i[0]
+				average[1] += i[1]
+				count += 1
+			average[0] = int(round(average[0]/count))
+			average[1] = int(round(average[1]/count))
+			return average
+		else:
+			return last_seen
 
 	def show_error(self):
 		"""  Shows that you're doing the exercise wrong. Currently makes the window red"""
@@ -214,14 +220,21 @@ class Camera():
 		cv2.rectangle(overlay, (0,0), (640,500), (0,0,255), thickness = -1)
 		opacity = .4
 		cv2.addWeighted(overlay, opacity, self.frame, 1-opacity, 0, self.frame)
+		if self.timer > 5:
+			self.timer = 0
+		if self.timer == 0:
+			pygame.init()
+			pygame.mixer.music.load("buzzer_x.wav")
+			pygame.mixer.music.play()
+			self.timer = time.sleep(.01)
+
 		
 # Controller
 class Detect():
 	""" Finds marker based on color input and can output position of marker"""
 	def __init__(self, low, up):
 		#Initial marker positions
-		self.marker_pos = []
-
+		self.marker_pos = [0, 0]
 		self.low = low
 		self.up = up
 
@@ -239,9 +252,10 @@ class Detect():
 		# Find color cricles
 		circles = []
 		circles = cv2.HoughCircles(imgray, cv2.cv.CV_HOUGH_GRADIENT,1,
-		 				20, param1=20, param2=25, minRadius=0, maxRadius=0)
+		 				20, param1=10, param2=5, minRadius=0, maxRadius=0)
 		
 		self.marker_pos = circles
+
 
 if __name__ == "__main__":
     app = PythonGUI()
