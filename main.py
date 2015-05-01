@@ -194,11 +194,20 @@ class Camera():
 			#get the markers
 			if exercise == 'Bicep Curl':
 				# find positions of markers
-				blue.get_marker(self.hsv, self.frame)
-				red.get_marker(self.hsv, self.frame)
+				blue.get_marker(self.hsv, self.frame, 10, 10)
+				red.get_marker(self.hsv, self.frame, 10, 10)
 
 				#based on marker position, analyse
 				self.draw_bicep(red.marker_pos, blue.marker_pos) #input exercise			
+			if exercise == 'Pushup':
+				pass
+			if exercise == 'Lunge':
+				pass
+			if exercise == 'Plank':
+				pass
+			if exercise == 'Squat':
+				pass
+
 			# Show frame
 			cv2.imshow('frame', self.frame)
 
@@ -270,7 +279,7 @@ class Detect():
 		self.low = low
 		self.up = up
 
-	def get_marker(self, hsv, frame):
+	def get_marker(self, hsv, frame, p1, p2):
 		"""gets marker location"""
 		# Threshold the HSV image to get only one color
 		lower = np.array(self.low)
@@ -284,7 +293,7 @@ class Detect():
 		# Find color cricles
 		circles = []
 		circles = cv2.HoughCircles(imgray, cv2.cv.CV_HOUGH_GRADIENT,1,
-		 				20, param1=10, param2=5, minRadius=0, maxRadius=0)
+		 				20, param1=p1, param2=p2, minRadius=0, maxRadius=0)
 		
 		self.marker_pos = circles
 

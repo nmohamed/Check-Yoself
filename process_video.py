@@ -3,7 +3,6 @@ Functions to compare a video of you doing an exercise to stock photos of you doi
 exercise.
 """
 
-
 import cv2
 import numpy as np
 import math
@@ -46,8 +45,8 @@ class Detect():
 			lower_red = np.array([150, 50, 200])
 			upper_red = np.array([360, 255, 255])
 
-			lower_green = np.array([30, 150, 200])
-			upper_green = np.array([90, 255, 255])
+			lower_green = np.array([10, 150, 200])
+			upper_green = np.array([30, 255, 255])
 
 			# Threshold the HSV image to get only blue colors
 			mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -92,8 +91,8 @@ class Detect():
 					cv2.circle(frame, (i[0],i[1]),2,(0,0,255),3)
 
 			circles_g = []
-			circles_g = cv2.HoughCircles(imgray_green, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
-										param2=05, minRadius=0, maxRadius=0)
+			circles_g = cv2.HoughCircles(imgray_green, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=12, 
+										param2=15, minRadius=0, maxRadius=0)
 
 			if circles_g is not None:
 				for i in circles_g[0,:]:
