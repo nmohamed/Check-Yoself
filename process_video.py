@@ -40,14 +40,14 @@ class Detect():
 			hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 			# define orange of color in HSV
-			lower_blue = np.array([70,50,150])
+			lower_blue = np.array([90,50,200])
 			upper_blue = np.array([150,255,255])
 
-			lower_red = np.array([150, 50, 150])
+			lower_red = np.array([150, 50, 200])
 			upper_red = np.array([360, 255, 255])
 
-			lower_green = np.array([30, 150, 100])
-			upper_green = np.array([70, 255, 255])
+			lower_green = np.array([30, 150, 200])
+			upper_green = np.array([90, 255, 255])
 
 			# Threshold the HSV image to get only blue colors
 			mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -82,7 +82,7 @@ class Detect():
 
 			circles_r = []
 			circles_r = cv2.HoughCircles(imgray_red, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
-										param2=25, minRadius=0, maxRadius=0)
+										param2=10, minRadius=0, maxRadius=0)
 
 			if circles_r is not None:
 				for i in circles_r[0,:]:
@@ -93,7 +93,7 @@ class Detect():
 
 			circles_g = []
 			circles_g = cv2.HoughCircles(imgray_green, cv2.cv.CV_HOUGH_GRADIENT,1, 20, param1=10, 
-										param2=25, minRadius=0, maxRadius=0)
+										param2=05, minRadius=0, maxRadius=0)
 
 			if circles_g is not None:
 				for i in circles_g[0,:]:
@@ -115,8 +115,11 @@ class Detect():
 				cv2.addWeighted(overlay, opacity, frame, 1-opacity, 0, frame)
 				#cv2.line(frame, (100,100), (400,400), (0,255,255))
 			
-			#if blue is shoulder, red is elbow, green is hand:
-			cv2.imshow('frame', frame)
+			#if blue is shoulder, red is elbow, green is hand:\
+			cv2.imshow('g', res_green)
+			cv2.imshow('frame', color_blur_green)
+			cv2.imshow('framse', frame)
+
 
 			
 			if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -124,4 +127,4 @@ class Detect():
 				break
 
 if __name__ == "__main__":
-	pass
+	Detect()
