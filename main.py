@@ -58,9 +58,9 @@ class TutorialFrame(BaseFrame):
     def create_widgets(self):
         """Create the base widgets for the frame."""
         self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
-        self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
+        self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
         self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
-        self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
+        self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
         self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
         self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
@@ -73,23 +73,52 @@ class TutorialFrame(BaseFrame):
 
     def biceptutorial(self):
 
-        vidFile = cv.CaptureFromFile( 'biceps.mp4' )
-        # cv2.namedWindow("bicepvid", 1)
-
-        nFrames = int(  cv.GetCaptureProperty( vidFile, cv.CV_CAP_PROP_FRAME_COUNT ) )
-        fps = cv.GetCaptureProperty( vidFile, cv.CV_CAP_PROP_FPS )
-        waitPerFrameInMillisec = int( 1/fps * 1000/1 )
+        vidFile = cv.CaptureFromFile('biceps.mp4')
+        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+        waitPerFrameInMillisec = int(1/fps * 1000/1)
 
         print 'Num. Frames = ', nFrames
         print 'Frame Rate = ', fps, ' frames per sec'
 
         for f in xrange(nFrames):
-          frameImg = cv.QueryFrame(vidFile)
-          cv.ShowImage( "bicepvid",  frameImg )
-          cv.WaitKey(waitPerFrameInMillisec)
-          cv2.destroyWindow(bicepvid)
-          
+            frameImg = cv.QueryFrame(vidFile)
+            cv.ShowImage( "bicepvid",  frameImg )
+            cv.WaitKey(waitPerFrameInMillisec) 
+        cv.DestroyAllWindows(nFrames)
+        quitbutton = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
+    def pushuptutorial(self):
+        vidFile = cv.CaptureFromFile('pushup.mp4')
+        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+        waitPerFrameInMillisec = int(1/fps * 1000/1)
+
+        print 'Num. Frames = ', nFrames
+        print 'Frame Rate = ', fps, ' frames per sec'
+
+        for f in xrange(nFrames):
+            frameImg = cv.QueryFrame(vidFile)
+            cv.ShowImage( "bicepvid",  frameImg )
+            cv.WaitKey(waitPerFrameInMillisec) 
+        cv.DestroyAllWindows(nFrames)
+
+    def lungetutorial(self):
+        vidFile = cv.CaptureFromFile('lunges.mp4')
+        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+        waitPerFrameInMillisec = int(1/fps * 1000/1)
+
+        print 'Num. Frames = ', nFrames
+        print 'Frame Rate = ', fps, ' frames per sec'
+
+        for f in xrange(nFrames):
+            frameImg = cv.QueryFrame(vidFile)
+            cv.ShowImage( "bicepvid",  frameImg )
+            cv.WaitKey(waitPerFrameInMillisec) 
+        cv.DestroyAllWindows(nFrames)
+
+        
         # When playing is done, delete the window
         #  NOTE: this step is not strictly necessary, 
         #         when the script terminates it will close all windows it owns anyways
