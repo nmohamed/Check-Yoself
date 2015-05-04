@@ -86,7 +86,7 @@ class TutorialFrame(BaseFrame):
             cv.ShowImage( "bicepvid",  frameImg )
             cv.WaitKey(waitPerFrameInMillisec) 
         cv.DestroyAllWindows(nFrames)
-        quitbutton = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+
 
     def pushuptutorial(self):
         vidFile = cv.CaptureFromFile('pushup.mp4')
