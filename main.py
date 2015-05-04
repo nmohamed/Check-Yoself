@@ -41,9 +41,11 @@ class HomeFrame(BaseFrame):
 		"""Create the base widgets for the frame."""
 		self.tutorial = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(TutorialFrame),padx=5,pady=5,text="Tutorial")
 		self.checkyourself = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(ExerciseFrame),padx=5,pady=5,text="Check Yourself")
+		self.help = tk.Button(self, anchor = tk.W, command = lambda: self.controller.show_frame(HelpFrame),padx=5, pady =5, text = "Help")
 		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 		self.tutorial.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.checkyourself.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.help.grid(padx=5, pady=5, sticky = tk.W+tk.E)
 		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
@@ -62,6 +64,7 @@ class TutorialFrame(BaseFrame):
 		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
 		self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
 		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.help = tk.Button(self, anchor = tk.W, command = lambda:self.controller.show_frame(HelpFrame), padx=5, pady=5, text="Help" )
 		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
 		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
@@ -69,6 +72,7 @@ class TutorialFrame(BaseFrame):
 		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.help.grid(padx=5, pady=5, sticky = tk.W+tk.E)
 		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 	def biceptutorial(self):
@@ -116,98 +120,134 @@ class TutorialFrame(BaseFrame):
 			frameImg = cv.QueryFrame(vidFile)
 			cv.ShowImage( "bicepvid",  frameImg )
 			cv.WaitKey(waitPerFrameInMillisec) 
+			if cv2.waitKey(1) & 0xFF == ord('q'):
+				cv2.destroyWindow(nFrames)
 		cv.DestroyAllWindows(nFrames)
 
 		
-		# When playing is done, delete the window
-		#  NOTE: this step is not strictly necessary, 
-		#         when the script terminates it will close all windows it owns anyways
-		# c = cv.WaitKey(27)
-		# if c == 27:
-		#     cv.DestroyAllWindows("Test")
-		# #     # break
-		# if cv2.waitKey(1) & 0xFF == ord('q'):
-		#     cv2.destroyWindow(nFrames)
-    """The application home page.
+	"""The application home page.
 
-    Attributes:
-      new_button (tk.Button): The button to switch to HomeFrame.
+	Attributes:
+	  new_button (tk.Button): The button to switch to HomeFrame.
 
-    """
+	"""
 
-    def create_widgets(self):
-        """Create the base widgets for the frame."""
-        self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
-        self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
-        self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
-        self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
-        self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
-        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+	def create_widgets(self):
+		"""Create the base widgets for the frame."""
+		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
+		self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
+		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+		self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
+		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.help = tk.Button(self, anchor = tk.W, command=lambda:self.help(), padx=5, pady=5, text = "Help")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
-        self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.help.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
-    def biceptutorial(self):
+	def help(self):
+	 	self.bicepcurls = tk.Button(self, anchor=tk.W,command=lambda: self.bicephelp(), padx=5,pady=5,text="Bicep Curls")
+	 	self.pushup = tk.Button(self, anchor=tk.W,command=lambda: self.pushuphelp(), padx=5,pady=5,text="Pushup")
+	 	self.lunge = tk.Button(self, anchor=tk.W,command=lambda: self.lungehelp(), padx=5,pady=5,text="Lunge")
+	 	self.plank = tk.Button(self, anchor=tk.W,command=lambda: self.plankhelp(), padx=5,pady=5,text="Plank")
 
-        vidFile = cv.CaptureFromFile('biceps.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
-
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
-
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
+	 	self.bicepcurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+	 	self.pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+	 	self.lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+	 	self.plank.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
-    def pushuptutorial(self):
-        vidFile = cv.CaptureFromFile('pushup.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
+	 def bicephelp(self):
 
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
+	 	pass
+	 def pushuphelp(self):
+	 	pass
+	 def lungehelp(self):
+	 	pass
+	 def plankhelp(self):
+	 	pass
 
-    def lungetutorial(self):
-        vidFile = cv.CaptureFromFile('lunges.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
 
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
 
-        
-        # When playing is done, delete the window
-        #  NOTE: this step is not strictly necessary, 
-        #         when the script terminates it will close all windows it owns anyways
-        # c = cv.WaitKey(27)
-        # if c == 27:
-        #     cv.DestroyAllWindows("Test")
-        # #     # break
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     cv2.destroyWindow(nFrames)
+
+
+	def biceptutorial(self):
+
+		vidFile = cv.CaptureFromFile('biceps.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
+
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
+
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
+
+
+	def pushuptutorial(self):
+		vidFile = cv.CaptureFromFile('pushup.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
+
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
+
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
+
+	def lungetutorial(self):
+		vidFile = cv.CaptureFromFile('lunges.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
+
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
+
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
+
+		
+class HelpFrame(BaseFrame):
+	"""The application help page.
+	"""
+
+
+	def create_widgets(self):
+		"""Create base widgets for the frame"""
+		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: Camera('Bicep Curl'),padx=5,pady=5,text="Bicep Curls")
+		self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
+		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+		self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
+		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.help = tk.Button(self, anchor = tk.W, command=lambda: self.controller.show_frame(HelpFrame), padx=5, pady=5, text="Help")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+
+		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.help.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
 
@@ -226,12 +266,14 @@ class ExerciseFrame(BaseFrame):
 		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
 		self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
 		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		# self.help = tk.Button(self, anchor = tk.W, command=lambda: self.controller....)
 		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
 		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.help.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
