@@ -45,8 +45,8 @@ class Detect():
 			lower_red = np.array([150, 50, 200])
 			upper_red = np.array([360, 255, 255])
 
-			lower_green = np.array([10, 150, 200])
-			upper_green = np.array([30, 255, 255])
+			lower_green = np.array([60, 150, 200])
+			upper_green = np.array([90, 255, 255])
 
 			# Threshold the HSV image to get only blue colors
 			mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -115,9 +115,7 @@ class Detect():
 				#cv2.line(frame, (100,100), (400,400), (0,255,255))
 			
 			#if blue is shoulder, red is elbow, green is hand:\
-			cv2.imshow('g', res_green)
 			cv2.imshow('frame', color_blur_green)
-			cv2.imshow('framse', frame)
 
 
 			

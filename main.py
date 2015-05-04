@@ -14,185 +14,185 @@ import time
 
 # The view
 class BaseFrame(tk.Frame):
-    """ An abstract base class for the frames that sit inside PythonGUI.
-        Args:
-            master (tk.Frame): The parent widget.
-            controller (PythonGUI): The controlling Tk object.
-        Attributes:
-            controller (PythonGUI): The controlling Tk object."""
+	""" An abstract base class for the frames that sit inside PythonGUI.
+		Args:
+			master (tk.Frame): The parent widget.
+			controller (PythonGUI): The controlling Tk object.
+		Attributes:
+			controller (PythonGUI): The controlling Tk object."""
 
-    def __init__(self, master, controller):
-        tk.Frame.__init__(self, master)
-        self.controller = controller
-        self.grid()
-        self.create_widgets()
+	def __init__(self, master, controller):
+		tk.Frame.__init__(self, master)
+		self.controller = controller
+		self.grid()
+		self.create_widgets()
 
-    def create_widgets(self):
-        """Create the widgets for the frame."""
-        raise NotImplementedError
+	def create_widgets(self):
+		"""Create the widgets for the frame."""
+		raise NotImplementedError
 
 
 class HomeFrame(BaseFrame):
-    """The application home page.
-        Attributes:
-            new_button (tk.Button): The button to switch to ExecuteFrame."""
+	"""The application home page.
+		Attributes:
+			new_button (tk.Button): The button to switch to ExecuteFrame."""
 
-    def create_widgets(self):
-        """Create the base widgets for the frame."""
-        self.tutorial = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(TutorialFrame),padx=5,pady=5,text="Tutorial")
-        self.checkyourself = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(ExerciseFrame),padx=5,pady=5,text="Check Yourself")
-        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
-        self.tutorial.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.checkyourself.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+	def create_widgets(self):
+		"""Create the base widgets for the frame."""
+		self.tutorial = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(TutorialFrame),padx=5,pady=5,text="Tutorial")
+		self.checkyourself = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(ExerciseFrame),padx=5,pady=5,text="Check Yourself")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+		self.tutorial.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.checkyourself.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
 class TutorialFrame(BaseFrame):
-    """The application home page.
+	"""The application home page.
 
-    Attributes:
-      new_button (tk.Button): The button to switch to HomeFrame.
+	Attributes:
+	  new_button (tk.Button): The button to switch to HomeFrame.
 
-    """
+	"""
 
-    def create_widgets(self):
-        """Create the base widgets for the frame."""
-        self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
-        self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
-        self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
-        self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
-        self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
-        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+	def create_widgets(self):
+		"""Create the base widgets for the frame."""
+		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
+		self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
+		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+		self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
+		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
-        self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
-    def biceptutorial(self):
+	def biceptutorial(self):
 
-        vidFile = cv.CaptureFromFile('biceps.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
+		vidFile = cv.CaptureFromFile('biceps.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
 
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
-        quitbutton = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
+		quitbutton = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
-    def pushuptutorial(self):
-        vidFile = cv.CaptureFromFile('pushup.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
+	def pushuptutorial(self):
+		vidFile = cv.CaptureFromFile('pushup.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
 
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
 
-    def lungetutorial(self):
-        vidFile = cv.CaptureFromFile('lunges.mp4')
-        nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-        fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-        waitPerFrameInMillisec = int(1/fps * 1000/1)
+	def lungetutorial(self):
+		vidFile = cv.CaptureFromFile('lunges.mp4')
+		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
+		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
+		waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-        print 'Num. Frames = ', nFrames
-        print 'Frame Rate = ', fps, ' frames per sec'
+		print 'Num. Frames = ', nFrames
+		print 'Frame Rate = ', fps, ' frames per sec'
 
-        for f in xrange(nFrames):
-            frameImg = cv.QueryFrame(vidFile)
-            cv.ShowImage( "bicepvid",  frameImg )
-            cv.WaitKey(waitPerFrameInMillisec) 
-        cv.DestroyAllWindows(nFrames)
+		for f in xrange(nFrames):
+			frameImg = cv.QueryFrame(vidFile)
+			cv.ShowImage( "bicepvid",  frameImg )
+			cv.WaitKey(waitPerFrameInMillisec) 
+		cv.DestroyAllWindows(nFrames)
 
-        
-        # When playing is done, delete the window
-        #  NOTE: this step is not strictly necessary, 
-        #         when the script terminates it will close all windows it owns anyways
-        # c = cv.WaitKey(27)
-        # if c == 27:
-        #     cv.DestroyAllWindows("Test")
-        # #     # break
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     cv2.destroyWindow(nFrames)
+		
+		# When playing is done, delete the window
+		#  NOTE: this step is not strictly necessary, 
+		#         when the script terminates it will close all windows it owns anyways
+		# c = cv.WaitKey(27)
+		# if c == 27:
+		#     cv.DestroyAllWindows("Test")
+		# #     # break
+		# if cv2.waitKey(1) & 0xFF == ord('q'):
+		#     cv2.destroyWindow(nFrames)
 
 
 
 class ExerciseFrame(BaseFrame):
-    """The application home page.
+	"""The application home page.
 
-    Attributes:
-      new_button (tk.Button): The button to switch to HomeFrame.
+	Attributes:
+	  new_button (tk.Button): The button to switch to HomeFrame.
 
-    """
+	"""
 
-    def create_widgets(self):
-        """Create the base widgets for the frame."""
-        self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: Camera('Bicep Curl'),padx=5,pady=5,text="Bicep Curls")
-        self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
-        self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
-        self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
-        self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
-        self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+	def create_widgets(self):
+		"""Create the base widgets for the frame."""
+		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: Camera('Bicep Curl'),padx=5,pady=5,text="Bicep Curls")
+		self.Pushup = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Pushup")
+		self.Deadlift = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Deadlift")
+		self.Lunge = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Lunge")
+		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
-        self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-        self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.BicepCurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Deadlift.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.Lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
 class PythonGUI(tk.Tk):
-    """The main window of the GUI.
+	"""The main window of the GUI.
 
-    Attributes:
-      container (tk.Frame): The frame container for the sub-frames.
-      frames (dict of tk.Frame): The available sub-frames.
+	Attributes:
+	  container (tk.Frame): The frame container for the sub-frames.
+	  frames (dict of tk.Frame): The available sub-frames.
 
-    """
+	"""
 
-    def __init__(self):
-        tk.Tk.__init__(self)
-        self.title("Python GUI")
-        self.create_widgets()
-        self.resizable(0, 0)
+	def __init__(self):
+		tk.Tk.__init__(self)
+		self.title("Python GUI")
+		self.create_widgets()
+		self.resizable(0, 0)
 
-    def create_widgets(self):
-        """Create the widgets for the frame."""             
-        #   Frame Container
-        self.container = tk.Frame(self)
-        self.container.grid(row=0, column=0, sticky=tk.W+tk.E)
+	def create_widgets(self):
+		"""Create the widgets for the frame."""             
+		#   Frame Container
+		self.container = tk.Frame(self)
+		self.container.grid(row=0, column=0, sticky=tk.W+tk.E)
 
-        #   Frames
-        self.frames = {}
-        for f in (HomeFrame, TutorialFrame, ExerciseFrame): # defined subclasses of BaseFrame
-            frame = f(self.container, self)
-            frame.grid(row=2, column=2, sticky=tk.NW+tk.SE)
-            self.frames[f] = frame
-        self.show_frame(HomeFrame)
+		#   Frames
+		self.frames = {}
+		for f in (HomeFrame, TutorialFrame, ExerciseFrame): # defined subclasses of BaseFrame
+			frame = f(self.container, self)
+			frame.grid(row=2, column=2, sticky=tk.NW+tk.SE)
+			self.frames[f] = frame
+		self.show_frame(HomeFrame)
 
-    def show_frame(self, cls):
-        """Show the specified frame.
+	def show_frame(self, cls):
+		"""Show the specified frame.
 
-        Args:
-          cls (tk.Frame): The class of the frame to show. 
+		Args:
+		  cls (tk.Frame): The class of the frame to show. 
 
-        """
-        self.frames[cls].tkraise()
+		"""
+		self.frames[cls].tkraise()
 
 # The second view
 class Camera():
@@ -200,10 +200,14 @@ class Camera():
 	def __init__(self, exercise):
 		self.cap = cv2.VideoCapture(0)
 		self.timer = 0
-		self.blue_values = ([70, 150, 200], [150, 255, 255])
+		self.blue_values = ([92, 150, 200], [150, 255, 255])
 		self.red_values = ([150, 150, 150] , [360, 255, 255])
+		self.orange_values = ([10, 150, 200], [30, 255, 255])
+		self.green_values = ([60, 150, 200], [90, 255, 255])
 		self.draw_blue = [0,0]
 		self.draw_red = [0,0]
+		self.draw_orange = [0,0]
+		self.draw_green = [0,0]
 		self.do_exercise(exercise)
 
 	def do_exercise(self, exercise):
@@ -227,15 +231,7 @@ class Camera():
 				red.get_marker(self.hsv, self.frame, 10, 10)
 
 				#based on marker position, analyse
-				self.draw_bicep(red.marker_pos, blue.marker_pos) #input exercise			
-			if exercise == 'Pushup':
-				pass
-			if exercise == 'Lunge':
-				pass
-			if exercise == 'Plank':
-				pass
-			if exercise == 'Squat':
-				pass
+				self.draw_bicep(red.marker_pos, blue.marker_pos) #input exercise
 
 			# Show frame
 			cv2.imshow('frame', self.frame)
@@ -322,12 +318,12 @@ class Detect():
 		# Find color cricles
 		circles = []
 		circles = cv2.HoughCircles(imgray, cv2.cv.CV_HOUGH_GRADIENT,1,
-		 				20, param1=p1, param2=p2, minRadius=0, maxRadius=0)
+						20, param1=p1, param2=p2, minRadius=0, maxRadius=0)
 		
 		self.marker_pos = circles
 
 
 if __name__ == "__main__":
-    app = PythonGUI()
-    app.mainloop()
-    exit()
+	app = PythonGUI()
+	app.mainloop()
+	exit()
