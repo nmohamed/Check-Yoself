@@ -203,6 +203,17 @@ class Camera():
 		self.draw_red = [0,0]
 		self.draw_green = [0,0]
 		self.draw_orange= [0,0]
+		###################################
+		# If you have a hard time getting markers to be recognized, play around with these values.
+		self.blue_p1 = 10
+		self.blue_p2 = 10
+		self.red_p1 = 10
+		self.red_p2 = 10
+		self.green_p1 = 10
+		self.green_p2 = 10
+		self.orange_p1 = 10
+		self.orange_p2 = 10
+		###################################
 		self.do_exercise(exercise)
 
 
@@ -210,7 +221,7 @@ class Camera():
 		""" This function shows the webcam feed of the user exercising and lets them know
 			about their posture. Depending on the exercises, certain markers will be tracked 
 			and their positions will be updated."""
-			
+
 		if exercise == 'Bicep Curl':
 			blue = Detect(self.blue_values[0], self.blue_values[1])
 			red = Detect(self.red_values[0], self.red_values[1])
@@ -235,26 +246,26 @@ class Camera():
 			# Get the markers
 			if exercise == 'Bicep Curl':
 				# find positions of markers
-				blue.get_marker(self.hsv, self.frame)
-				red.get_marker(self.hsv, self.frame)
+				blue.get_marker(self.hsv, self.frame, self.blue_p1, self.blue_p2)
+				red.get_marker(self.hsv, self.frame, self.red_p1, self.red_p2)
 
 				#based on marker position, analyse
 				self.draw_bicep(red.marker_pos, blue.marker_pos) #input exercise
 
 			elif exercise == 'Lunge':
 				# find positions of markers
-				blue.get_marker(self.hsv, self.frame)
-				orange.get_marker(self.hsv, self.frame)
+				blue.get_marker(self.hsv, self.frame, self.blue_p1, self.blue_p2)
+				orange.get_marker(self.hsv, self.frame, self.orange_p1, self.orange_p2)
 
 				#based on marker position, analyse
 				self.draw_lunge(orange.marker_pos, blue.marker_pos) #input exercise      
 
 			elif exercise == 'Pushup' or exercise == 'Plank':
 				# find positions of markers
-				blue.get_marker(self.hsv, self.frame)
-				red.get_marker(self.hsv, self.frame)
-				green.get_marker(self.hsv, self.frame)
-				orange.get_marker(self.hsv, self.frame)
+				blue.get_marker(self.hsv, self.frame, self.blue_p1, self.blue_p2)
+				red.get_marker(self.hsv, self.frame, self.red_p1, self.red_p2)
+				green.get_marker(self.hsv, self.frame, self.green_p1, self.green_p2)
+				orange.get_marker(self.hsv, self.frame, self.orange_p1, self.orange_p2)
 
 				#based on marker position, analyse
 				self.draw_pushup(red.marker_pos, blue.marker_pos, green.marker_pos, orange.marker_pos) #input exercise
@@ -373,7 +384,7 @@ class Detect():
 		self.up = up
 
 
-	def get_marker(self, hsv, frame):
+	def get_marker(self, hsv, frame, p1, p2):
 		""" Finds marker location """
 
 		# Threshold the HSV image to get only one color
@@ -388,7 +399,7 @@ class Detect():
 		# Find color cricles
 		circles = []
 		circles = cv2.HoughCircles(imgray, cv2.cv.CV_HOUGH_GRADIENT,1,
-						20, param1=10, param2=5, minRadius=0, maxRadius=0)
+						20, param1=p1, param2=p2, minRadius=0, maxRadius=0)
 		
 		self.marker_pos = circles
 
