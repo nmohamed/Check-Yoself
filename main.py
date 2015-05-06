@@ -10,7 +10,8 @@ import Tkinter as tk
 import analyze_func as af
 import pygame
 import time
-import Image
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 
 # The view
@@ -27,6 +28,7 @@ class BaseFrame(tk.Frame):
 		self.controller = controller
 		self.grid()
 		self.create_widgets()
+
 
 	def create_widgets(self):
 		"""Create the widgets for the frame."""
@@ -55,15 +57,14 @@ class TutorialFrame(BaseFrame):
 
 	Attributes:
 	  new_button (tk.Button): The button to switch to HomeFrame.
-
 	"""
 
 	def create_widgets(self):
 		"""Create the base widgets for the frame."""
-		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.biceptutorial(), padx=5,pady=5,text="Bicep Curls")
-		self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.pushuptutorial(),padx=5,pady=5,text="Pushup")
-		self.Plank = tk.Button(self,anchor=tk.W,command=lambda:self.planktutorial(),padx=5,pady=5,text="Plank")
-		self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.lungetutorial(),padx=5,pady=5,text="Lunge")
+		self.BicepCurls = tk.Button(self,anchor=tk.W,command=lambda: self.showtutorial('biceps.mp4'), padx=5,pady=5,text="Bicep Curls")
+		self.Pushup = tk.Button(self,anchor=tk.W,command=lambda: self.showtutorial('pushup.mp4'),padx=5,pady=5,text="Pushup")
+		self.Plank = tk.Button(self,anchor=tk.W,command=lambda:self.showtutorial('lunges.mp4'),padx=5,pady=5,text="Plank")
+		self.Lunge = tk.Button(self,anchor=tk.W,command=lambda: self.showtutorial('plank.mp4'),padx=5,pady=5,text="Lunge")
 		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
 		self.help = tk.Button(self, anchor = tk.W, command = lambda:self.controller.show_frame(HelpFrame), padx=5, pady=5, text="Help" )
 		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
@@ -76,114 +77,49 @@ class TutorialFrame(BaseFrame):
 		self.help.grid(padx=5, pady=5, sticky = tk.W+tk.E)
 		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
-	def biceptutorial(self):
 
-		vidFile = cv.CaptureFromFile('biceps.mp4')
+	def showtutorial(self, filename):
+		""" Shows a video of how to properly do an exercise. 
+				filename: name of video file """
+
+		vidFile = cv.CaptureFromFile(filename)
 		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
 		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
 		waitPerFrameInMillisec = int(1/fps * 1000/1)
 
-		print 'Num. Frames = ', nFrames
-		print 'Frame Rate = ', fps, ' frames per sec'
-
 		for f in xrange(nFrames):
 			frameImg = cv.QueryFrame(vidFile)
-			cv.ShowImage( "bicepvid",  frameImg )
+			cv.ShowImage( "Tutorial",  frameImg )
 			cv.WaitKey(waitPerFrameInMillisec) 
-		cv.DestroyAllWindows(nFrames)
-		quitbutton = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
-
-	def pushuptutorial(self):
-		vidFile = cv.CaptureFromFile('pushup.mp4')
-		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-		waitPerFrameInMillisec = int(1/fps * 1000/1)
-
-		print 'Num. Frames = ', nFrames
-		print 'Frame Rate = ', fps, ' frames per sec'
-
-		for f in xrange(nFrames):
-			frameImg = cv.QueryFrame(vidFile)
-			cv.ShowImage( "pushupvid",  frameImg )
-			cv.WaitKey(waitPerFrameInMillisec) 
-		cv.DestroyAllWindows(nFrames)
-
-	def lungetutorial(self):
-		vidFile = cv.CaptureFromFile('lunges.mp4')
-		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-		waitPerFrameInMillisec = int(1/fps * 1000/1)
-
-		print 'Num. Frames = ', nFrames
-		print 'Frame Rate = ', fps, ' frames per sec'
-
-		for f in xrange(nFrames):
-			frameImg = cv.QueryFrame(vidFile)
-			cv.ShowImage( "lungevid",  frameImg )
-			cv.WaitKey(waitPerFrameInMillisec) 
-			if cv2.waitKey(1) & 0xFF == ord('q'):
-				cv2.destroyWindow(nFrames)
-		cv.DestroyAllWindows(nFrames)
-
-	def planktutorial(self):
-		vidFile = cv.CaptureFromFile('plank.mp4')
-		nFrames = int(cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FRAME_COUNT))
-		fps = cv.GetCaptureProperty(vidFile, cv.CV_CAP_PROP_FPS)
-		waitPerFrameInMillisec = int(1/fps * 1000/1)
-
-		print 'Num. Frames = ', nFrames
-		print 'Frame Rate = ', fps, ' frames per sec'
-
-		for f in xrange(nFrames):
-			frameImg = cv.QueryFrame(vidFile)
-			cv.ShowImage( "plankvid",  frameImg )
-			cv.WaitKey(waitPerFrameInMillisec) 
-			if cv2.waitKey(1) & 0xFF == ord('q'):
-				cv2.destroyWindow(nFrames)
 		cv.DestroyAllWindows(nFrames)
 
 	
-
-
 class HelpFrame(BaseFrame):
-	"""The application help page.
-	"""
-
+	""" The application help page."""
 
 	def create_widgets(self):
 		"""Create base widgets for the frame"""
 
-		self.bicepcurls = tk.Button(self, anchor=tk.W,command=lambda: self.bicephelp(), padx=5,pady=5,text="Bicep Curls")
-	 	self.pushup = tk.Button(self, anchor=tk.W,command=lambda: self.pushuphelp(), padx=5,pady=5,text="Pushup")
-	 	self.lunge = tk.Button(self, anchor=tk.W,command=lambda: self.lungehelp(), padx=5,pady=5,text="Lunge")
-	 	self.plank = tk.Button(self, anchor=tk.W,command=lambda: self.plankhelp(), padx=5,pady=5,text="Plank")
-	 	self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
-	 	self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
+		self.bicepcurls = tk.Button(self, anchor=tk.W,command=lambda: self.showexercise('bicep.jpg'), padx=5,pady=5,text="Bicep Curls")
+		self.pushup = tk.Button(self, anchor=tk.W,command=lambda: self.showexercise('pushup.jpg'), padx=5,pady=5,text="Pushup")
+		self.lunge = tk.Button(self, anchor=tk.W,command=lambda: self.showexercise('lunge.jpg'), padx=5,pady=5,text="Lunge")
+		self.plank = tk.Button(self, anchor=tk.W,command=lambda: self.showexercise('plank.jpg'), padx=5,pady=5,text="Plank")
+		self.back = tk.Button(self,anchor=tk.W,command=lambda: self.controller.show_frame(HomeFrame),padx=5,pady=5,text="Back")
+		self.quit = tk.Button(self,anchor=tk.W,command=quit,padx=5,pady=5,text="Quit")
 
-	 	self.bicepcurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-	 	self.pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-	 	self.lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-	 	self.plank.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-	 	self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
-	 	self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.bicepcurls.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.pushup.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.lunge.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.plank.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.back.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+		self.quit.grid(padx=5, pady=5, sticky=tk.W+tk.E)
 
 
-	def bicephelp(self):
-	 	image = Image.open('bicep.jpg')
-	 	image.show()
-
-	def pushuphelp(self):
-	 	image = Image.open('pushup.jpg')
-	 	image.show()
-
-	def lungehelp(self):
-	 	image = Image.open('lunge.jpg')
-	 	image.show()
-
-	def plankhelp(self):
-	 	image = Image.open('plank.jpg')
-	 	image.show()
-
+	def showexercise(self, exercise):
+		""" Shows instructions for how to do exercises"""
+		image = mpimg.imread(exercise)
+		plt.imshow(image)
+		plt.show()
 
 
 class ExerciseFrame(BaseFrame):
@@ -217,7 +153,6 @@ class PythonGUI(tk.Tk):
 	Attributes:
 	  container (tk.Frame): The frame container for the sub-frames.
 	  frames (dict of tk.Frame): The available sub-frames.
-
 	"""
 
 	def __init__(self):
@@ -225,6 +160,7 @@ class PythonGUI(tk.Tk):
 		self.title("Python GUI")
 		self.create_widgets()
 		self.resizable(0, 0)
+
 
 	def create_widgets(self):
 		"""Create the widgets for the frame."""             
@@ -240,6 +176,7 @@ class PythonGUI(tk.Tk):
 			self.frames[f] = frame
 		self.show_frame(HomeFrame)
 
+
 	def show_frame(self, cls):
 		"""Show the specified frame.
 
@@ -249,10 +186,13 @@ class PythonGUI(tk.Tk):
 		"""
 		self.frames[cls].tkraise()
 
-# The second view
+
+# The second 'view'
 class Camera():
 	""" OpenCV stuff"""
+
 	def __init__(self, exercise):
+		""" Initialize the markers and showing video"""
 		self.cap = cv2.VideoCapture(0)
 		self.timer = 0
 		self.blue_values = ([92, 150, 200], [150, 255, 255])
@@ -265,7 +205,12 @@ class Camera():
 		self.draw_orange= [0,0]
 		self.do_exercise(exercise)
 
+
 	def do_exercise(self, exercise):
+		""" This function shows the webcam feed of the user exercising and lets them know
+			about their posture. Depending on the exercises, certain markers will be tracked 
+			and their positions will be updated."""
+			
 		if exercise == 'Bicep Curl':
 			blue = Detect(self.blue_values[0], self.blue_values[1])
 			red = Detect(self.red_values[0], self.red_values[1])
@@ -280,15 +225,14 @@ class Camera():
 			green = Detect(self.green_values[0], self.green_values[1])
 			orange = Detect(self.orange_values[0], self.orange_values[1])
 
-		#green = Detect([30, 150, 100,  70, 255, 255])
-
+		""" Get images from your webcam and display them."""
 		while(True):
 			# Create frame
 			self.ret, self.frame = self.cap.read()
 			# Convert BGR to HSV
 			self.hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
 
-			#get the markers
+			# Get the markers
 			if exercise == 'Bicep Curl':
 				# find positions of markers
 				blue.get_marker(self.hsv, self.frame)
@@ -315,7 +259,6 @@ class Camera():
 				#based on marker position, analyse
 				self.draw_pushup(red.marker_pos, blue.marker_pos, green.marker_pos, orange.marker_pos) #input exercise
 
-
 			# Show frame
 			cv2.imshow('frame', self.frame)
 
@@ -327,9 +270,10 @@ class Camera():
 		self.cap.release()
 		cv2.destroyAllWindows()
 
+
 	def draw_bicep(self, red_pos, blue_pos):
-		""" blue: marker position of blue marker, same with red
-			draw_blue/draw_red = last seen position of markers for drawing persistent line"""
+		""" Evaluates bicep exercise
+				blue_pos, red_pos: marker position of blue marker, same with red"""
 		#draw circles
 		self.draw_blue = self.draw_circles(blue_pos, (255,0,0), self.draw_blue)
 		self.draw_red = self.draw_circles(red_pos, (0,0,255), self.draw_red)
@@ -348,6 +292,9 @@ class Camera():
 
 
 	def draw_lunge(self, orange_pos, blue_pos):
+		""" Evaluates lunge exercise
+				orange_pos, blue_pos: marker positions"""
+
 		#blue-knee toe-orangle
 		self.draw_blue = self.draw_circles(blue_pos, (255,0,0), self.draw_blue)
 		self.draw_orange = self.draw_circles(orange_pos, (0,0,255), self.draw_orange)
@@ -359,9 +306,11 @@ class Camera():
 		if pos_status == True:
 			self.show_error()
 
+
 	def draw_pushup(self, blue_pos,orange_pos,red_pos,green_pos):
-		""" blue: marker position of blue marker, same with red
-			draw_blue/draw_red = last seen position of markers for drawing persistent line"""
+		""" Evaluates pushup AND plank exercise
+				orange_pos, blue_pos, red_pos, green_pos: marker positions"""
+
 		#shouder-blue,hip-orange,knee-red,ankle-green    
 		#draw circles
 		self.draw_blue = self.draw_circles(blue_pos, (255,0,0), self.draw_blue)
@@ -395,32 +344,38 @@ class Camera():
 		else:
 			return last_seen
 
+
 	def show_error(self):
 		"""  Shows that you're doing the exercise wrong. Currently makes the window red"""
 		overlay = self.frame.copy()
 		cv2.rectangle(overlay, (0,0), (640,500), (0,0,255), thickness = -1)
 		opacity = .4
 		cv2.addWeighted(overlay, opacity, self.frame, 1-opacity, 0, self.frame)
-		if self.timer > 5:
+		if self.timer > 2.9:
 			self.timer = 0
 		if self.timer == 0:
 			pygame.init()
 			pygame.mixer.music.load("buzzer_x.wav")
 			pygame.mixer.music.play()
-			self.timer = time.sleep(.01)
+			self.timer = time.sleep(3)
 
 		
 # Controller
 class Detect():
 	""" Finds marker based on color input and can output position of marker"""
+
 	def __init__(self, low, up):
-		#Initial marker positions
+		""" Initial marker positions
+				up: higher color threshold
+				low: lower color threshold"""
 		self.marker_pos = [0, 0]
 		self.low = low
 		self.up = up
 
+
 	def get_marker(self, hsv, frame):
-		"""gets marker location"""
+		""" Finds marker location """
+
 		# Threshold the HSV image to get only one color
 		lower = np.array(self.low)
 		upper = np.array(self.up)
